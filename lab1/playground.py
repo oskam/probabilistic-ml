@@ -1,38 +1,59 @@
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import matplotlib.animation as animation
+# import timeit
+#
+# clock = timeit.default_timer
+#
+# fig, ax = plt.subplots()
+#
+# alphab = ['A', 'B', 'C', 'D', 'E', 'F']
+# frequencies = [1, 44, 12, 11, 2, 10]
+#
+# pos = np.arange(len(alphab))
+# width = 1.0     # gives histogram aspect to the bar diagram
+# ax.set_xticks(pos + (width / 2))
+# ax.set_xticklabels(alphab)
+#
+# rects = plt.bar(pos, frequencies, width, color='r')
+# start = clock()
+#
+#
+# def animate(arg, rects):
+#     frameno, frequencies = arg
+#     for rect, f in zip(rects, frequencies):
+#         rect.set_height(f)
+#     print("FPS: {:.2f}".format(frameno / (clock() - start)))
+#
+#
+# def step():
+#     for frame, bin_idx in enumerate(np.linspace(0,1000000,100000000), 1):
+#         #Here we just change the first bin, so it increases through the animation.
+#         frequencies[0] = bin_idx
+#         yield frame, frequencies
+#
+#
+# ani = animation.FuncAnimation(fig, animate, step, interval=10,
+#                               repeat=False, blit=False, fargs=(rects,))
+# plt.show()
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import timeit
+from matplotlib import pyplot as plt
+from matplotlib import animation
+import seaborn as sns
 
-clock = timeit.default_timer
+nx = 50
+ny = 50
+fig = plt.figure()
+data = np.random.rand(nx, ny)
+sns.heatmap(data, vmax=.8, square=True)
 
-fig, ax = plt.subplots()
+def init():
+      sns.heatmap(np.zeros((nx, ny)), vmax=.8, square=True)
 
-alphab = ['A', 'B', 'C', 'D', 'E', 'F']
-frequencies = [1, 44, 12, 11, 2, 10]
+def animate(i):
+    plt.clf()
+    data = np.random.rand(nx, ny)
+    sns.heatmap(data, vmax=.8, square=True)
 
-pos = np.arange(len(alphab))
-width = 1.0     # gives histogram aspect to the bar diagram
-ax.set_xticks(pos + (width / 2))
-ax.set_xticklabels(alphab)
-
-rects = plt.bar(pos, frequencies, width, color='r')
-start = clock()
-
-
-def animate(arg, rects):
-    frameno, frequencies = arg
-    for rect, f in zip(rects, frequencies):
-        rect.set_height(f)
-    print("FPS: {:.2f}".format(frameno / (clock() - start)))
-
-
-def step():
-    for frame, bin_idx in enumerate(np.linspace(0,1000000,100000000), 1):
-        #Here we just change the first bin, so it increases through the animation.
-        frequencies[0] = bin_idx
-        yield frame, frequencies
-
-
-ani = animation.FuncAnimation(fig, animate, step, interval=10,
-                              repeat=False, blit=False, fargs=(rects,))
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=20, repeat = False)
 plt.show()

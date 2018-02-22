@@ -1,5 +1,3 @@
-import random
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,7 +5,6 @@ from matplotlib import animation
 
 # First set up the figure, the axis, and the plot element we want to animate
 fig, ax = plt.subplots()
-
 
 STOP = 10
 
