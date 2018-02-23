@@ -1,11 +1,11 @@
-import random
-
+# import random
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from matplotlib import animation
 
-STOP = 100
+
+STOP = 10
 occurences = [[0 for _ in range(0, STOP)] for _ in range(0, STOP)]
 frequencies = [[0 for _ in range(0, STOP)] for _ in range(0, STOP)]
 
@@ -17,9 +17,6 @@ def randoms():
 
 
 fig = plt.figure()
-
-# def init():
-#       sns.heatmap(np.zeros((STOP, STOP)), vmax=1, square=True)
 
 
 def animate(arg):
