@@ -1,59 +1,58 @@
-# import numpy as np
-# import matplotlib.pyplot as plt
-# import matplotlib.animation as animation
-# import timeit
-#
-# clock = timeit.default_timer
-#
-# fig, ax = plt.subplots()
-#
-# alphab = ['A', 'B', 'C', 'D', 'E', 'F']
-# frequencies = [1, 44, 12, 11, 2, 10]
-#
-# pos = np.arange(len(alphab))
-# width = 1.0     # gives histogram aspect to the bar diagram
-# ax.set_xticks(pos + (width / 2))
-# ax.set_xticklabels(alphab)
-#
-# rects = plt.bar(pos, frequencies, width, color='r')
-# start = clock()
-#
-#
-# def animate(arg, rects):
-#     frameno, frequencies = arg
-#     for rect, f in zip(rects, frequencies):
-#         rect.set_height(f)
-#     print("FPS: {:.2f}".format(frameno / (clock() - start)))
-#
-#
-# def step():
-#     for frame, bin_idx in enumerate(np.linspace(0,1000000,100000000), 1):
-#         #Here we just change the first bin, so it increases through the animation.
-#         frequencies[0] = bin_idx
-#         yield frame, frequencies
-#
-#
-# ani = animation.FuncAnimation(fig, animate, step, interval=10,
-#                               repeat=False, blit=False, fargs=(rects,))
-# plt.show()
+# negative test if im not ill?
+
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import animation
+import matplotlib.pyplot as plt
 import seaborn as sns
 
-nx = 50
-ny = 50
-fig = plt.figure()
-data = np.random.rand(nx, ny)
-sns.heatmap(data, vmax=.8, square=True)
+# not_A - healthy
+# not B - negative test result
 
-def init():
-      sns.heatmap(np.zeros((nx, ny)), vmax=.8, square=True)
+# const:
+PROB_NOT_B_IF_NOT_A = 0.98  # prob that the test will yield a positive result [B] if the disease is present [A]
+PROB_NOT_B_IF_A = 0.01  # prob that the test will yield a positive result [B] if the disease is not  present [~A]
 
-def animate(i):
-    plt.clf()
-    data = np.random.rand(nx, ny)
-    sns.heatmap(data, vmax=.8, square=True)
+xs = [i / 5e4 for i in range(1, 101)]
 
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=20, repeat = False)
+
+def get__not_y(x):
+    # count prob of a positive test result [B], irrespective of
+    # whether the disease is present [A] or not present [~A]
+    # then return prob that a positive test result will be a true positive
+    prob_not_b = (PROB_NOT_B_IF_A * (1-x)) + (PROB_NOT_B_IF_NOT_A *x)
+    return (PROB_NOT_B_IF_NOT_A * (1-x))/ prob_not_b
+
+
+PROB_B_IF_A = 0.99  # prob that the test will yield a positive result [B] if the disease is present [A]
+PROB_B_IF_NOT_A = 0.02  # prob that the test will yield a positive result [B] if the disease is not  present [~A]
+
+xs = [i / 5e4 for i in range(1, 101)]
+
+
+def get_y(x):
+    # count prob of a positive test result [B], irrespective of
+    # whether the disease is present [A] or not present [~A]
+    # then return prob that a positive test result will be a true positive
+    prob_b = (PROB_B_IF_A * x) + (PROB_B_IF_NOT_A * (1 - x))
+    return (PROB_B_IF_A * x) / prob_b
+
+
+ys = [get_y(x) for x in xs]
+
+# plt.plot(xs, ys)
+fig, ax = plt.subplots()
+ax.plot(xs, ys,  '-o', ms=3, lw=2, alpha=0.7, mfc='blue')
+ys = [get_y(x) for x in xs]
+not_ys =[get__not_y(x) for x in xs]
+
+# plt.plot(xs, ys)
+fig, ax = plt.subplots()
+ax.plot(xs, ys, 'r', xs, not_ys, 'b')
+ax.grid()
+
+
+# labels = [str(x) if x % 10 == 0 else '' for x in xs]
+# ax.set_xticks(xs, labels)
+# ax.set_xticklabels([str(x) if x % 5 == 0 else '' for x in xs])
+
+
 plt.show()

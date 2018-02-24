@@ -15,7 +15,6 @@ def randoms():
         yield np.random.randint(0, STOP)
         # yield random.randint(0, STOP-1)
 
-
 fig = plt.figure()
 
 
@@ -23,7 +22,7 @@ def animate(arg):
     plt.clf()
     frequencies = arg
     data = frequencies
-    sns.heatmap(data, robust=True, square=True, cmap="gist_heat").invert_yaxis()
+    sns.heatmap(data, robust=True, square=True, cmap="gist_heat", annot=True).invert_yaxis()
 
 
 def step():

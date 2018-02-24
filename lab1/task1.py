@@ -6,6 +6,8 @@ from matplotlib import animation
 # First set up the figure, the axis, and the plot element we want to animate
 fig, ax = plt.subplots()
 
+ax.set_xlabel('Range of the numbers in the stream')
+
 STOP = 10
 
 ax.set_ylim((0, 1))
