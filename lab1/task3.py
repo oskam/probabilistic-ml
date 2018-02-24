@@ -1,8 +1,5 @@
-import random
 
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # A - ill
 # B - positive test result
@@ -24,13 +21,12 @@ def get_y(x):
 
 ys = [get_y(x) for x in xs]
 
-# plt.plot(xs, ys)
 fig, ax = plt.subplots()
-ax.plot(xs, ys,  '-o', ms=3, lw=2, alpha=0.7, mfc='blue')
-ax.grid()
-# labels = [str(x) if x % 10 == 0 else '' for x in xs]
-# ax.set_xticks(xs, labels)
-# ax.set_xticklabels([str(x) if x % 5 == 0 else '' for x in xs])
-
+fig.canvas.draw()
+ax.plot(xs, ys, '-o', ms=3, lw=2, alpha=0.7, mfc='blue')
+ax.set_xlabel('Number of sick people in population')
+ax.set_ylabel('Probablity that positive test is corret')
+labels = [x if x % 10 == 0 else '' for x in range(1, 101)]
+plt.xticks(xs, labels)
 
 plt.show()
