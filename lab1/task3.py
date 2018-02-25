@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 
 # A - ill
@@ -25,7 +24,7 @@ fig, ax = plt.subplots()
 fig.canvas.draw()
 ax.plot(xs, ys, '-o', ms=3, lw=2, alpha=0.7, mfc='blue')
 ax.set_xlabel('Number of sick people in population')
-ax.set_ylabel('Probablity that positive test is corret')
+ax.set_ylabel('Probability that positive test is correct')
 labels = [x if x % 10 == 0 else '' for x in range(1, 101)]
 plt.xticks(xs, labels)
 

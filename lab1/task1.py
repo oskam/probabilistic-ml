@@ -3,21 +3,19 @@ import matplotlib.pyplot as plt
 
 from matplotlib import animation
 
-# First set up the figure, the axis, and the plot element we want to animate
+STOP = 10
+
+occurrences = [0 for _ in range(0, STOP)]
+frequencies = [0.0 for _ in range(0, STOP)]
+
 fig, ax = plt.subplots()
 
 ax.set_xlabel('Range of the numbers in the stream')
-
-STOP = 10
-
 ax.set_ylim((0, 1))
 ax.set_xlim((-0.4, STOP-0.4))
 
-occurences = [0 for _ in range(0, STOP)]
-frequencies = [0.0 for _ in range(0, STOP)]
-
 pos = np.arange(STOP)
-width = 0.8     # gives histogram aspect to the bar diagram
+width = 0.8
 ax.set_xticks(pos)
 ax.set_xticklabels([str(n) if n % 5 == 0 else '' for n in range(0, STOP)])
 
@@ -37,14 +35,13 @@ def animate(arg, rects):
 
 def step():
     for i in randoms():
-        occurences[i] += 1
-        total = sum(occurences)
+        occurrences[i] += 1
+        total = sum(occurrences)
         for j in range(0, STOP):
-            frequencies[j] = occurences[j] / total
+            frequencies[j] = occurrences[j] / total
         yield frequencies
 
 
-# call the animator. blit=True means only re-draw the parts that have changed.
 anim = animation.FuncAnimation(fig, animate, step,
                                repeat=False, interval=100, fargs=(rects,))
 plt.show()
