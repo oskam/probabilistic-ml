@@ -13,8 +13,12 @@ def plot(num):
     for i in range(num):
         data = [np.random.normal(scale=STD_DEV[i]) for _ in range(TRIES)]
         r, g, b = np.random.sample(3)
-        mean = np.mean(data)
-        legend_data.append(str(i+1) + ".  mean: " + str(round(mean, 2)) + "  variance: " + str((STD_DEV[i])*2))
+        # mean = np.mean(data)
+        mean = (sum(data)/TRIES)
+        v = [((x-mean)**2) for x in data]
+        variance = sum(v)/TRIES
+        # variance = np.var(data))
+        legend_data.append(str(i+1) + ".  mean: " + str(round(mean, 2)) + "  variance: " + str(round(variance, 2)))
         sns.distplot(data, kde=True, hist=False, color=(r,g,b))
         axes.axvline(mean, color=(r,g,b), linestyle='--')
     plt.legend(legend_data, bbox_to_anchor=(1.1, 1))
