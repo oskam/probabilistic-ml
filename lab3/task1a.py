@@ -18,9 +18,9 @@ width = 0.8
 
 rects = plt.bar(pos, means, width, color='b')
 
-def samples(N):
+def samples(n):
     for _ in range(K):
-        yield np.random.exponential(scale=SCALE, size=N)
+        yield np.random.exponential(scale=SCALE, size=n)
 
 
 def animate(arg, rects):
