@@ -58,11 +58,10 @@ def inf_range():
 def step():
     num_of_successes = 0
     for n in inf_range():
-        x = np.random.binomial(1, p)
+        k = np.random.binomial(1, p)
         if x == 1:
             num_of_successes += 1
-        results[0] = num_of_successes
-        results[1] = (n-num_of_successes)
+        pmf = bernoulli.pmf(k, p)
     yield results
 
 anim = animation.FuncAnimation(fig, animate, step,
