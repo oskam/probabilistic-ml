@@ -1,13 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy
 from scipy.stats import bernoulli
 
 from matplotlib import animation
 
 
-p = 0.7 # probability of success
-# n = 100 # number of trials
-num_of_successes = 0
+p = 0.5  # probability of success
+min_n = 0  # number of trials
+max_n = 100
+step_n = 10
+
 
 def bernoulli_trials(n, p):
     """Perform n Bernoulli trials with success probability p
@@ -28,42 +31,39 @@ def bernoulli_trials(n, p):
 
 
 def bernoulli_trials_using_binomial(n, p):
-    n_success = 0
-    for _ in range(n):
-        x = np.random.binomial(1, p)
-        if x == 1:
-            n_success += 1
-    return n_success
+    x = np.random.binomial(1, p, n)
+    return x
+
 
 # -----plot------
 fig, ax = plt.subplots()
-pos = np.arange(2)
+ax.set_ylim(bottom=0)
+ax.set_xlim((0, max_n))
+pos = np.arange(max_n)
+ax.set_xticks(pos)
+ax.set_xticklabels([str(n) if n % 5 == 0 else '' for n in range(0, max_n)])
 width = 0.8
-results = np.zeros(2)
 
-rects = plt.bar(pos, results, width, color='b')
+results = np.zeros(max_n)
+
+rects = plt.bar(pos, results, width, color='b', align='center')
+
 
 def animate(arg, rects):
+    ax.set_ylim(bottom=0, top=max(arg), emit=True)
     for rect, f in zip(rects, arg):
         rect.set_height(f)
 
 
-def inf_range():
-    n = 0
-    while True:
-        n += 1
-        yield n
-
-
 def step():
-    num_of_successes = 0
-    for n in inf_range():
-        k = np.random.binomial(1, p)
-        if x == 1:
-            num_of_successes += 1
-        pmf = bernoulli.pmf(k, p)
-    yield results
+    for n in range(min_n+step_n, max_n+1, step_n):
+        plt.title(f"n = {n}")
+        results = np.zeros(max_n)
+        for x in range(n):
+            results[x] = scipy.stats.binom.pmf(x, n, p)
+        yield results
+
 
 anim = animation.FuncAnimation(fig, animate, step,
-                               repeat=False, interval=10, fargs=(rects,))
+                               repeat=False, interval=2000, fargs=(rects,))
 plt.show()
