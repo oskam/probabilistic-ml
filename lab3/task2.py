@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-DATA_TYPE = "HTRU"
+DATA_TYPE = "wine"
 
 def plot(data_type):
 
@@ -18,6 +18,7 @@ def plot(data_type):
         # correlation(df)
         # scatter_axes_histograms(3, 4, df)
         scatter_diagonal_histogram(df, class_column)
+
         # sns.pairplot(df, hue=df.columns[class_column])
         # scatter_diagonal_histogram(df, class_column)
 
@@ -63,11 +64,10 @@ def plot(data_type):
         # scatter_axes_histograms(4, 5, df)
 
 
-
 def scatter_axes_histograms(x, y, df):
     g = sns.jointplot(x=df.columns[x], y=df.columns[y], data=df)
     plt.show()
-#
+
 
 def scatter_diagonal_histogram(df, class_column):
     g = sns.PairGrid(df, hue=df.columns[class_column])
@@ -77,12 +77,10 @@ def scatter_diagonal_histogram(df, class_column):
     plt.show()
 
 
-
 def correlation(df):
     # Compute the correlation matrix
     # corr = df.corr()
-    corr = df.corr()
-
+    corr = df.cov()
 
     # Generate a mask for the upper triangle
     mask = np.zeros_like(corr, dtype=np.bool)
