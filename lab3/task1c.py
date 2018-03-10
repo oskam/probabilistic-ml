@@ -6,6 +6,7 @@ from scipy.stats import bernoulli
 from matplotlib import animation
 
 
+# p = [0.5, 0.3, 0.2]  # probability of success
 p = 0.5  # probability of success
 min_n = 0  # number of trials
 max_n = 100
@@ -59,8 +60,9 @@ def step():
     for n in range(min_n+step_n, max_n+1, step_n):
         plt.title(f"n = {n}")
         results = np.zeros(n)
+        # combs = [[a, b, c] for a in range(n) for b in range(n) for c in range(n) if a+b+c == n]
         for i in range(n):
-            results[i] = scipy.stats.binom.pmf(i, n, p)
+            results[i] = scipy.stats.multinomial.pmf([i, n-i], n, [p, 1.0-p])
         yield results
 
 
