@@ -4,34 +4,30 @@ from pandas import plotting
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# matrix types:
+# corr
+# cov
 
+MATRIX_TYPE = "corr"
 DATA_TYPE = "wine"
 
-def plot(data_type):
 
+def plot(data_type):
     if data_type == "wine":
         path = "lab3/datasets/wine.data"
         df = pd.read_csv(path)
         class_column = 11
         y = df[df.columns[class_column]]
         X = df.drop(columns=df.columns[class_column])
-        # correlation(df)
-        # scatter_axes_histograms(3, 4, df)
+        matrix_plot(df, MATRIX_TYPE)
+        scatter_axes_histograms(4, 5, df)
         scatter_diagonal_histogram(df, class_column)
-
-        # sns.pairplot(df, hue=df.columns[class_column])
-        # scatter_diagonal_histogram(df, class_column)
-
-        # pd.plotting.scatter_matrix(df, alpha=0.3, figsize=(14, 8), diagonal='kde')
-        # plt.show()
-        # sns.pairplot(df)
 
         # f, ax = plt.subplots(figsize=(10, 8))
         # corr = df.corr()
         # sns.heatmap(corr, mask=np.zeros_like(corr, dtype=np.bool), cmap=sns.diverging_palette(220, 10, as_cmap=True),
         #             square=True, ax=ax)
         # plt.show()
-
 
     elif data_type == "yeast":
         path = "lab3/datasets/yeast.data"
@@ -40,10 +36,9 @@ def plot(data_type):
         class_column = 8
         y = df[df.columns[class_column]]
         X = df.drop(columns=df.columns[class_column])
-        # correlation(df)
+        matrix_plot(df, MATRIX_TYPE)
         scatter_axes_histograms(4, 5, df)
-        # sns.pairplot(df, hue=df.columns[class_column])
-        # plt.show()
+        scatter_diagonal_histogram(df, class_column)
 
     elif data_type == "diabetes":
         path = "lab3/datasets/diabetes.data"
@@ -51,8 +46,9 @@ def plot(data_type):
         class_column = 19
         y = df[df.columns[class_column]]
         X = df.drop(columns=df.columns[class_column])
-        correlation(df)
-        # scatter_axes_histograms(4, 5, df)
+        matrix_plot(df, MATRIX_TYPE)
+        scatter_axes_histograms(4, 5, df)
+        scatter_diagonal_histogram(df, class_column)
 
     elif data_type == "HTRU":
         path = "lab3/datasets/HTRU_2.csv"
@@ -60,8 +56,9 @@ def plot(data_type):
         class_column = 8
         y = df[df.columns[class_column]]
         X = df.drop(columns=df.columns[class_column])
-        correlation(df)
-        # scatter_axes_histograms(4, 5, df)
+        matrix_plot(df, MATRIX_TYPE)
+        scatter_axes_histograms(4, 5, df)
+        scatter_diagonal_histogram(df, class_column)
 
 
 def scatter_axes_histograms(x, y, df):
@@ -70,20 +67,23 @@ def scatter_axes_histograms(x, y, df):
 
 
 def scatter_diagonal_histogram(df, class_column):
-    g = sns.PairGrid(df, hue=df.columns[class_column])
-    g = g.map_diag(plt.hist, edgecolor="w")
-    g = g.map_offdiag(plt.scatter, edgecolor="w", s=40)
-    g = g.add_legend()
+    # g = sns.PairGrid(df, hue=df.columns[class_column])
+    # g = g.map_diag(plt.hist, edgecolor="w")
+    # g = g.map_offdiag(plt.scatter, edgecolor="w", s=40)
+    # g = g.add_legend()
+
+    sns.pairplot(df, hue=df.columns[class_column])
     plt.show()
 
 
-def correlation(df):
-    # Compute the correlation matrix
-    # corr = df.corr()
-    corr = df.cov()
+def matrix_plot(df, type):
+    if type == "corr":
+        data = df.corr()
+    elif type == "cov":
+        data = df.cov()
 
     # Generate a mask for the upper triangle
-    mask = np.zeros_like(corr, dtype=np.bool)
+    mask = np.zeros_like(data, dtype=np.bool)
     mask[np.triu_indices_from(mask)] = True
 
     # Set up the matplotlib figure
@@ -93,15 +93,9 @@ def correlation(df):
     cmap = sns.diverging_palette(220, 10, as_cmap=True)
 
     # Draw the heatmap with the mask and correct aspect ratio
-    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0, annot=True,
+    sns.heatmap(data, mask=mask, cmap=cmap, vmax=.3, center=0, annot=True,
                 square=True, linewidths=.5, cbar_kws={"shrink": .5})
     plt.show()
 
-
-def covariance(df):
-    pass
-
-# print(X.head())
-# print(y.head())
 
 plot(DATA_TYPE)
