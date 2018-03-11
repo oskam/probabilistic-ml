@@ -8,7 +8,7 @@ import seaborn as sns
 NUM_OF_PLOTS = 3
 SAMPLES = int(1e5)
 STD_DEV = [1, 2, 1, 3]  # σ sigma
-LOCATION = [0, 5, 8, 15]  # μ mi
+LOCATION = [0, 5, 10, 15]  # μ mi
 SHOW_COMPONENTS = False
 
 
@@ -34,11 +34,11 @@ def plot():
     # variance = np.var(final_data)
     variance = sum(v) / (SAMPLES * NUM_OF_PLOTS)
 
-    legend_data.append("mean: " + str(round(mean, 2)) + "  variance: " + str(round(variance, 2)))
+    legend_data.append("  mean: " + str(round(mean, 2)) + "\n" + "  variance: " + str(round(variance, 2)))
     r, g, b = np.random.sample(3)
     sns.distplot(final_data, kde=True, hist=True, color=(r, g, b))
     axes.axvline(mean, color=(r, g, b), linestyle='--')
-    plt.legend(legend_data, bbox_to_anchor=(0.6, 1))
+    plt.legend(legend_data, bbox_to_anchor=(0.8, 0.8))
     plt.show()
 
 
