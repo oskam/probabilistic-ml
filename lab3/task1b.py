@@ -1,20 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy
-from scipy.stats import bernoulli
+
 
 from matplotlib import animation
 
 
 p = 0.5  # probability of success
+k = 10_000  # number of trials runs
 min_n = 0  # number of trials
 max_n = 100
 step_n = 10
 
 
 def bernoulli_trials(n, p):
-    """Perform n Bernoulli trials with success probability p
-    and return number of successes."""
     # Initialize number of successes: n_success
     n_success = 0
 
@@ -30,23 +29,23 @@ def bernoulli_trials(n, p):
     return n_success
 
 
-def bernoulli_trials_using_binomial(n, p):
-    x = np.random.binomial(1, p, n)
-    return x
+def bernoulli_k_trials_using_binomial(k, n, p):
+    res = np.zeros(k, dtype=int)
+    for i, _ in enumerate(res):
+        res[i] = sum(np.random.binomial(1, p, n))
+    return res
 
 
 # -----plot------
 fig, ax = plt.subplots()
 ax.set_ylim(bottom=0)
-ax.set_xlim((0, max_n))
-pos = np.arange(max_n)
+ax.set_xlim((min_n, max_n+1))
+pos = np.arange(max_n+1)
 ax.set_xticks(pos)
-ax.set_xticklabels([str(n) if n % 5 == 0 else '' for n in range(0, max_n)])
+ax.set_xticklabels([str(n) if n % 5 == 0 else '' for n in range(0, max_n+1)])
 width = 0.8
 
-results = np.zeros(max_n)
-
-rects = plt.bar(pos, results, width, color='b', align='center')
+rects = plt.bar(pos, np.zeros(max_n+1), width, color='b', align='center')
 
 
 def animate(arg, rects):
@@ -54,14 +53,26 @@ def animate(arg, rects):
     for rect, f in zip(rects, arg):
         rect.set_height(f)
 
+# def step():
+#     for n in range(min_n+step_n, max_n+1, step_n):
+#         plt.title(f"n = {n}")
+#         results = np.zeros(n)
+#         for i in range(n):
+#             results[i] = scipy.stats.binom.pmf(i, n, p)
+#         yield results
+
 
 def step():
     for n in range(min_n+step_n, max_n+1, step_n):
-        plt.title(f"n = {n}")
-        results = np.zeros(n)
-        for i in range(n):
-            results[i] = scipy.stats.binom.pmf(i, n, p)
-        yield results
+        plt.title(f"n = {n}; k = {k}; p_suc = {p}")
+        runs = bernoulli_k_trials_using_binomial(k, n, p)
+        sucs = np.zeros(n+1)
+        for r in runs:
+            sucs[r] += 1
+        res = np.zeros(n+1)
+        for i, _ in enumerate(res):
+            res[i] = sucs[i] / k
+        yield res
 
 
 anim = animation.FuncAnimation(fig, animate, step,
