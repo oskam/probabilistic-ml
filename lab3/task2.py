@@ -19,8 +19,9 @@ def plot(data_type):
         class_column = 11
         y = df[df.columns[class_column]]
         X = df.drop(columns=df.columns[class_column])
+
         matrix_plot(df, MATRIX_TYPE)
-        scatter_axes_histograms(4, 5, df)
+        scatter_axes_histograms(7, 10, df)
         scatter_diagonal_histogram(df, class_column)
 
         # f, ax = plt.subplots(figsize=(10, 8))
@@ -75,6 +76,11 @@ def scatter_diagonal_histogram(df, class_column):
     sns.pairplot(df, hue=df.columns[class_column])
     plt.show()
 
+
+# cov(Xi,Xj)=E(Xi⋅Xj)−(E(Xi)⋅E(Xj))
+# corr: ri,j = cov(Xi,Xj) / si⋅sj
+# E to wartość oczekiwana zmiennej
+# si,sj to odchylenia standardowe zmiennych Xi,Xj
 
 def matrix_plot(df, type):
     if type == "corr":

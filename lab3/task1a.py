@@ -3,20 +3,21 @@ import matplotlib.pyplot as plt
 
 from matplotlib import animation
 
-K = 20 # number of samples
+K = 20  # number of samples
 SCALE = 1.0
 
 means = np.zeros(K)
 
 fig, ax = plt.subplots()
 
-ax.set_xlabel('Range of the numbers in the stream')
+ax.set_xlabel('Samples')
 ax.set_ylim((0, 2.0))
 
 pos = np.arange(K)
 width = 0.8
 
 rects = plt.bar(pos, means, width, color='b')
+
 
 def samples(n):
     for _ in range(K):
@@ -34,13 +35,14 @@ def inf_range():
         n += 1
         yield n
 
+
 def step():
     for n in inf_range():
         for i, sample in enumerate(samples(n)):
             means[i] = np.mean(sample)
         yield means
 
-anim = animation.FuncAnimation(fig, animate, step,
-                               repeat=False, interval=10, fargs=(rects,))
-plt.show()
 
+anim = animation.FuncAnimation(fig, animate, step,
+                               repeat=False, interval=100, fargs=(rects,))
+plt.show()
