@@ -42,7 +42,6 @@ def animate(arg, rects):
 #     for n in range(min_n+step_n, max_n+1, step_n):
 #         plt.title(f"n = {n}")
 #         results = np.zeros(n)
-#         # combs = [[a, b, c] for a in range(n) for b in range(n) for c in range(n) if a+b+c == n]
 #         for i in range(n):
 #             results[i] = scipy.stats.multinomial.pmf([i, n-i], n, [p, 1.0-p])
 #         yield results
