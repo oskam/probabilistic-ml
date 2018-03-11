@@ -1,12 +1,12 @@
 import numpy as np
-import scipy
+import scipy.stats
 from scipy.special import factorial
-
 
 probs = [.02, .05, .15, .1, .15, .1, .3, .07, .06]
 
- # 1 (Poisson binomial distribution)
-prob = [1-x for x in probs]
+# 1 (Poisson binomial distribution)
+# (1-p1)(1-p2)...(1-p9)
+prob = [1 - x for x in probs]
 result = np.prod(np.array(prob))
 print(result)
 
