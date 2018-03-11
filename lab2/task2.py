@@ -13,7 +13,7 @@ p = 0.1
 n = 9
 
 # 1 numpy
-print(sum(np.random.binomial(9, 0.1, 20000) == 0) / 20000)
+print(sum(np.random.binomial(9, 0.1, 10000) == 0) / 10000)
 
 # 2 scipy
 print(scipy.stats.binom.pmf(x, n, p))
